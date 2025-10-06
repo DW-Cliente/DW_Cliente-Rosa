@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="14. formularios-formData.js" defer></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <style>
+        img {
+            max-width: 200px;
+            max-height: 200px;
+        }
+    </style>
+</head>
+
+<body class="container">
+    <h1>Ejemplo de formularios</h1>
+    <form id="formProducto">
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Introduce tu nombre</label>
+            <input type="text" name="nombre" class="form-control" id="nombre" required>
+        </div>
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Aficiones: </label>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="hobbies" value="tenis">
+                <label class="form-check-label">
+                    Tenis
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="hobbies" value="comer">
+                <label class="form-check-label">
+                    Comer
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="hobbies" value="viajar">
+                <label class="form-check-label">
+                    Viajar
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="hobbies" value="caminar">
+                <label class="form-check-label">
+                    Caminar
+                </label>
+            </div>
+
+        </div>
+        
+        <div class="mb-3">
+            <label for="formFile" class="form-label">Avatar</label>
+            <input class="form-control" type="file" id="avatar" name="avatar" required accept="image/*">
+        </div>
+        <div class="mb-3">
+            <img src="" alt="" id="imgPreview">
+        </div>
+        <button type="submit" class="btn btn-primary">Añadir</button>
+    </form>
+    <table class="table table-striped" id="aficiones">  
+        <thead>
+            <tr>
+                <td>Avatar</td>
+                <td>Nombre</td>
+                <td>Aficiones</td>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <template id="aficionesTemplate">
+    <tr>
+      <td><img src="" alt=""></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </template>
+</body>
+
+</html>

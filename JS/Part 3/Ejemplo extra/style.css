@@ -1,0 +1,79 @@
+/* style.css */
+body {
+    font-family: sans-serif;
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+}
+
+.container,
+.log-container {
+    flex: 1;
+}
+
+form,
+#zona-mouse {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+input,
+textarea,
+button {
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.inline-label {
+    flex-direction: row;
+    align-items: center;
+}
+
+#zona-mouse {
+    margin-top: 20px;
+    background-color: #e0f7fa;
+    text-align: center;
+    justify-content: center;
+    height: 150px;
+}
+
+#coordenadas {
+    font-size: 0.9em;
+    color: #00796b;
+}
+
+.log-container {
+    border: 1px solid #333;
+    padding: 10px;
+    background: #f4f4f4;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+#log-eventos {
+    overflow-y: auto;
+    background: #fff;
+    padding: 5px;
+    font-family: monospace;
+    font-size: 0.9em;
+    flex-grow: 1;
+}
+
+.log-item {
+    padding: 3px;
+    border-bottom: 1px solid #eee;
+}
+
+.log-item.focus {
+    background-color: #d1ffbd;
+}
+
+.log-item.blur {
+    background-color: #ffd1bd;
+}

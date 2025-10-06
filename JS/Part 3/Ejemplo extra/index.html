@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lluvia de Colores</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="sol-index.js" defer></script>
+  </head>
+  <body>        
+    <div class="container">
+        <form id="mi-formulario">
+            <h2>Formulario Interactivo</h2>
+            
+            <label for="nombre">Nombre (Teclado y Foco):</label>
+            <input type="text" id="nombre" placeholder="Escribe algo aquí...">
+            
+            <label for="mensaje">Mensaje (Selecciona texto):</label>
+            <textarea id="mensaje" rows="3">Selecciona una parte de este texto.</textarea>
+
+            <label class="inline-label">
+                <input type="checkbox" id="terminos"> Acepto los términos
+            </label>
+            
+            <button type="submit" id="boton-submit">Enviar (Click, DblClick, MouseDown/Up)</button>
+        </form>
+
+        <div id="zona-mouse">
+            <p>Pasa el ratón por aquí</p>
+            <span id="coordenadas"></span>
+        </div>
+    </div>
+
+    <div class="log-container">
+        <h3>Registro de Eventos 🔴</h3>
+        <div id="log-eventos"></div>
+    </div>
+  </body>
+</html>
