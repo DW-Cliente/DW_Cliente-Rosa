@@ -4,14 +4,27 @@ const form = document.getElementById("formProducto");
 const template = document.getElementById("template");
 const tabla = document.getElementById("products"); 
 
-form.imagen.addEventListener('change', event => {
+form.elements.namedItem("imagen").addEventListener('change', event => {
     let file = event.target.files[0];
-    imgPreview.src = URL.createObjectURL(file); // Representación interna de la URL al archivo
+    let reader = new FileReader();
+    if (file) reader.readAsDataURL(file); // Serializar en base64
+    reader.addEventListener('load', e => { // Serialización terminada
+        imgPreview.src = reader.result; // Datos en Base64
+    });
 });
+form.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const formData = new FormData(form);
+    const plantilla = template.content.cloneNode(true);
+    const tr = plantilla.firstElementChild;
+    tr.querySelector("img").src = imgPreview.src;
+    tr.children[1].textContent = formData.get("description");
+    tr.children[2].textContent = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(formData.get("price"));
+    tr.children[3].textContent = new Intl.DateTimeFormat('es-ES', {
+    dateStyle: "short"
+}).format(new Date());
+    tabla.querySelector("tbody").append(tr);
 
-// Cuando se carga la imagen previsualizada liberamos la memoria de la URL (recomendado)
-imgPreview.addEventListener('load', e => URL.revokeObjectURL(imgPreview.src));
-
-form.addEventListener('submit', ()=>{
-
+    form.reset();
+    imgPreview.src="";
 });
