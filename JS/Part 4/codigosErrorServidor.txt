@@ -1,0 +1,16 @@
+Códigos que te devuelve el servidor entre otros:
+Códigos 2xx: Respuestas Exitosas
+  200 OK: Es el código más común. Significa que la petición tuvo éxito. La respuesta exacta depende del método usado (GET, POST, etc.).
+  201 Created: La petición tuvo éxito y, como resultado, se creó un nuevo recurso en el servidor. Es típico de las peticiones POST o PUT.
+  204 No Content: El servidor procesó la petición con éxito, pero no devuelve ningún contenido.
+Códigos 4xx: Errores del Cliente
+  400 Bad Request: El servidor no puede entender la petición debido a una sintaxis incorrecta.
+  401 Unauthorized: El cliente debe autenticarse para obtener la respuesta solicitada. Se requiere iniciar sesión.
+  403 Forbidden: El cliente no tiene los permisos necesarios para acceder al contenido. Aunque esté autenticado, no tiene autorización.
+  404 Not Found: Es el error más famoso. El servidor no pudo encontrar el recurso solicitado.
+  429 Too Many Requests: El usuario ha enviado demasiadas peticiones en un período de tiempo determinado
+Códigos 5xx: Errores del Servidor
+  500 Internal Server Error: Un error genérico que indica que algo salió mal en el servidor, pero no se puede especificar el problema exacto.
+  502 Bad Gateway: El servidor estaba actuando como intermediario y recibió una respuesta inválida de otro servidor.
+  503 Service Unavailable: El servidor no está disponible en este momento, generalmente por sobrecarga o mantenimiento.
+  504 Gateway Timeout: El servidor intermediario no recibió una respuesta a tiempo del servidor principal.
