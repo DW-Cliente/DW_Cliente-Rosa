@@ -32,7 +32,7 @@ obtenerUsuario()
         console.error("Error en la cadena:", error);
     }); */
 
-/* function verificarNumero(num) {
+function verificarNumero(num) {
     return new Promise((resolve, reject) => {
         if (num > 10) {
             resolve("El número es válido.");
@@ -46,7 +46,7 @@ function procesarValidez() {
     return Promise.resolve("Procesamiento adicional completado.");
 }
 
-verificarNumero(15) 
+verificarNumero(1) 
     .then((respuesta) => {
         console.log(respuesta);
         return procesarValidez(); // Si es válido, continuamos
@@ -55,11 +55,11 @@ verificarNumero(15)
         console.log(mensajeProcesado);
     })
     .catch((error) => {
-        console.error("Error de validación:", error);
-    }); */
+        console.error(`Error de validación: ${error}`);
+    });
 
 
-const autenticar = (user) => Promise.resolve(`Token para ${user}`);
+/* const autenticar = (user) => Promise.resolve(`Token para ${user}`);
 const obtenerPerfil = (token) => Promise.resolve({ id: 123, token });
 const cargarPermisos = (perfil) => Promise.reject("Error: Permisos no disponibles.");
 
@@ -78,4 +78,4 @@ autenticar("Admin")
     })
     .catch(error => {
         console.error("Error en el flujo:", error);
-    });
+    }); */
