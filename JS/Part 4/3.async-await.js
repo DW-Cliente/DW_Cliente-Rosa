@@ -34,7 +34,7 @@ async function intentarOperacion() {
   }
 }
 
-intentarOperacion(); */
+intentarOperacion();  */
 
 
 const obtenerID = () => new Promise(res => setTimeout(() => res(5), 1000));
