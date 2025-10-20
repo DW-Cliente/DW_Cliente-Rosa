@@ -16,7 +16,7 @@ async function getProductos() {
   }
 }
 
-async function mostrarProducto(producto) {
+function mostrarProducto(producto) {
   const plantillaCl = plantilla.content.cloneNode(true);  
   const tr = plantillaCl.firstElementChild;
   tr.querySelector("img").src = producto.imageUrl;
@@ -47,12 +47,12 @@ async function mostrarProducto(producto) {
   tabla.querySelector("tbody").append(tr);
 }
 
-formulario.addEventListener("submit", addProducto(e));
+formulario.addEventListener("submit", addProducto);
 async function addProducto(e) {
   e.preventDefault();
   let producto = {
-    description: formProducto.description.value,
-    price: +formProducto.price.value,
+    description: formulario.description.value,
+    price: +formulario.price.value,
     imageUrl: imgPreview.src,
     available: new Date().toISOString().split("T")[0],
     rating: 1,
@@ -67,10 +67,12 @@ async function addProducto(e) {
     });
     if (!resp.ok) throw new Error(resp.statusText);
     const json = await resp.json();
-    mostrarProducto(json.producto);
+    mostrarProducto(json.product);
   } catch (error) {
     console.error("Error añadiendo producto: " + error);
   }
+  formulario.reset();
+  imgPreview.src="";
 }
 
 formulario.image.addEventListener("change", (e) => {

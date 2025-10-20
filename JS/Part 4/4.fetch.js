@@ -45,8 +45,8 @@ formulario.addEventListener("submit", addProducto);
 function addProducto(e) {
   e.preventDefault();
   let producto = {
-    description: formProducto.description.value,
-    price: +formProducto.price.value,
+    description: formulario.description.value,
+    price: +formulario.price.value,
     imageUrl: imgPreview.src,
     available: new Date().toISOString().split("T")[0],
     rating: 1,
@@ -62,7 +62,7 @@ function addProducto(e) {
     .then((r) => r.json())
     .then((json) => {
       mostrarProducto(json.product);
-      formProducto.reset();
+      formulario.reset();
       imgPreview.src = "";
     });
 }
