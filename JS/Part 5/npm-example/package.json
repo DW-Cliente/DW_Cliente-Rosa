@@ -1,0 +1,27 @@
+{
+    "name": "npm-example",
+    "version": "1.0.0",
+    "description": "Ejemplo de proyecto con npm",
+    "license": "ISC",
+    "author": "Rosa Medina",
+    "type": "commonjs",
+    "main": "index.js",
+    "scripts": {
+        "start": "lite-server",
+        "hola": "echo \"Hola mundo\"",
+        "prestart": "eslint src/*.js",
+        "test": "eslint src/*.js"
+    },
+    "dependencies": {
+        "bootstrap": "^5.3.8",
+        "dayjs": "^1.11.18",
+        "prettier": "^3.6.2"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.38.0",
+        "eslint": "^9.38.0",
+        "globals": "^16.4.0",
+        "lite-server": "^2.6.1",
+        "uglify-js": "^3.19.3"
+    }
+}

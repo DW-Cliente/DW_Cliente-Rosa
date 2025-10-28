@@ -32,11 +32,7 @@ async function mostrarProducto(producto) {
   }).format(new Date(producto.available));
   tr.children[4].addEventListener("click", async () => {
     try{      
-      const resp = await fetch(`${SERVER}/products/${producto.id}`,{
-            method: 'DELETE'
-        });
-        if(!resp.ok) throw new Error(resp.statusText);
-
+      pService.delete(producto.id);
       tr.remove();
     }catch(error){
       console.log(`Error : ${error}`);
@@ -47,7 +43,7 @@ async function mostrarProducto(producto) {
   tabla.querySelector("tbody").append(tr);
 }
 
-/* formulario.addEventListener("submit", addProducto);
+formulario.addEventListener("submit", addProducto);
 async function addProducto(e) {
   e.preventDefault();
   let producto = {
@@ -58,20 +54,13 @@ async function addProducto(e) {
     rating: 1,
   };
   try {
-    const resp = await fetch(`${SERVER}/products`, {
-      method: "POST",
-      body: JSON.stringify(producto),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (!resp.ok) throw new Error(resp.statusText);
-    const json = await resp.json();
-    mostrarProducto(json.product);
+    mostrarProducto(await pService.add(producto));
+    formulario.reset();
+    imgPreview.src = "";
   } catch (error) {
     console.error("Error añadiendo producto: " + error);
   }
-} */
+}
 
 formulario.image.addEventListener("change", (e) => {
   const file = formulario.image.files[0];
