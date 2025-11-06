@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>products-ts</title>
+    <script type="module" src="./src/index.ts"></script>
+    <link rel="stylesheet" href="./src/style.css">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+  </head>
+    <body class="container">
+    <table id="products" class="table table-striped my-5">
+      <thead class="table-dark ">
+        <tr>
+          <th>Image</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Available</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <h2>Inserta un nuevo producto...</h2>
+    <form id="formProducto">
+      <div class="mb-3">
+        <label for="description" class="form-label"
+          >Descripción del producto:
+        </label>
+        <input
+          type="text"
+          class="form-control"
+          id="description"
+          placeholder="Descripción..."
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="price" class="form-label">Precio del producto: </label>
+        <input type="number" class="form-control" id="price" required />
+      </div>
+      <div class="mb-3">
+        <label for="image" class="form-label">Imagen: </label>
+        <input type="file" class="form-control" id="image" required />
+      </div>
+      <p><img id="imgPreview" src="" /></p>
+      <!-- Para previsualizar la imagen seleccionada -->
+      <button type="submit" class="btn btn-primary">Añadir</button>
+    </form>
+    <template id="template">
+      <tr>
+        <td><img /></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+          <button class="btn btn-danger">Borrar</button>
+        </td>
+      </tr>
+    </template>
+  </body>
+</html>
