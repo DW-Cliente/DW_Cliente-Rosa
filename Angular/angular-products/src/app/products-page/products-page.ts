@@ -1,13 +1,10 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Product } from '../interfaces/product';
 import { FormsModule } from '@angular/forms';
 import { ProductItem } from '../product-item/product-item';
-import { ProductForm } from "../product-form/product-form";
+import { ProductForm } from '../product-form/product-form';
+import { ProductsService } from '../services/products-service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'products-page',
@@ -16,39 +13,28 @@ import { ProductForm } from "../product-form/product-form";
   styleUrl: './products-page.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductsPage{
+export class ProductsPage {
   title = 'Tabla de productos';
   search = signal('');
-  products = signal<Product[]>([
-    {
-      id: 1,
-      description: 'SSD hard drive',
-      available: '2016-10-03',
-      price: 75,
-      imageUrl: '/ssd.jpg',
-      rating: 5,
-    },
-    {
-      id: 2,
-      description: 'LGA1151 Motherboard',
-      available: '2016-09-15',
-      price: 96.95,
-      imageUrl: '/motherboard.jpg',
-      rating: 4,
-    },
-  ]);
-
+  #productsService = inject(ProductsService);
+  products = signal<Product[]>([]);
   showImage = signal(true);
-  
   fileName = '';
-
   filteredProducts = computed(() => {
     return this.search()
       ? this.products().filter((p) =>
-          p.description.toLowerCase().includes(this.search().toLowerCase())
+          p.description.toLowerCase().includes(this.search().toLowerCase()),
         )
       : this.products();
   });
+
+  constructor() {
+    this.#productsService.getProducts().pipe(takeUntilDestroyed())
+    .subscribe({
+      next: (products) => this.products.set(products),
+      error: (error) => console.error(error),
+    }).add(/* Finaly */);
+  }
 
   toggleImage() {
     //    this.showImage.set(!this.showImage);
@@ -56,7 +42,6 @@ export class ProductsPage{
   }
 
   addProduct(product: Product) {
-    product.id = Math.max(...this.products().map((p) => p.id!)) + 1;
     this.products.update((products) => [...products, product]);
   }
 
