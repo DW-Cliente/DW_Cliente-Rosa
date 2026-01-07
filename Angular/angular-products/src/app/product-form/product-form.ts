@@ -19,11 +19,10 @@ import { ProductsService } from '../services/products-service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductForm {
-  add = output<Product>();
   #productsService = inject(ProductsService);
   #destroyRef = inject(DestroyRef);
+
   newProduct: Product = {
-    // Asignamos directamente
     id: 0,
     description: '',
     available: '',
@@ -32,13 +31,11 @@ export class ProductForm {
     price: 0,
   };
 
-  addProduct(productForm: NgForm) {
+  addProduct() {
     this.#productsService
       .insertProduct(this.newProduct)
       .pipe(takeUntilDestroyed(this.#destroyRef))
-      .subscribe((product) => {
-        this.add.emit(product); // Emitimos el producto (con id) devuelto por el servidor
-        productForm.resetForm(); // Reseteamos los campos de newProduct
+      .subscribe(() => {
         this.newProduct.imageUrl = ''; // La imagen también (no está vinculada al formulario)
       });
   }

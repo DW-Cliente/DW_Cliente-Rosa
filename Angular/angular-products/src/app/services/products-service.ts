@@ -1,31 +1,36 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, Signal } from '@angular/core';
 import { Product } from '../interfaces/product';
-import { HttpClient } from '@angular/common/http';
-import { Observable, map, tap } from 'rxjs';
+import { HttpClient, httpResource } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
 import { ProductsResponse, SingleProductResponse } from '../interfaces/responses';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
-  #productsUrl = 'https://api.fullstackpro.es/products-example/products';
-  #http = inject(HttpClient);
+  readonly #url = 'products';
+  readonly #http = inject(HttpClient);
 
-  getProducts(): Observable<Product[]> {
-    return this.#http
-      .get<ProductsResponse>(`${this.#productsUrl}`)
-      .pipe(map((resp) => resp.products));
+  getProductsResource(search: Signal<string>) {
+    return httpResource<ProductsResponse>(() => {
+      const urlSearchParams = new URLSearchParams({ search: search() });
+      return `${this.#url}?${urlSearchParams.toString()}`;
+    });
   }
+
   changeRating(idProduct: number, rating: number): Observable<void> {
-    return this.#http.put<void>(`${this.#productsUrl}/${idProduct}/rating`, {
+    return this.#http.put<void>(`${this.#url}/${idProduct}/rating`, {
       rating: rating,
     });
   }
 
   insertProduct(product: Product): Observable<Product> {
-    return this.#http.post<SingleProductResponse>(this.#productsUrl, product).pipe(
-      map((resp) => resp.product),
-      /* tap(() => this.productsResource.reload()), // Recarga los productos del resource */
-    );
+    return this.#http
+      .post<SingleProductResponse>(this.#url, product)
+      .pipe(map((resp) => resp.product));
+  }
+
+  deleteProduct(id: number): Observable<void> {
+    return this.#http.delete<void>(`${this.#url}/${id}`);
   }
 }
