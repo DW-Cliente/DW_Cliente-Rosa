@@ -1,0 +1,101 @@
+<div class="card mb-4">
+  <div class="card-header bg-success text-white">Add product</div>
+  <div class="card-body">
+    <form (ngSubmit)="addProduct()" [formGroup]="productForm">
+      <label class="mb-3 row">
+        <span class="col-sm-2 col-form-label text-sm-end">Description</span>
+        <div class="col-sm-10">
+          @let descModel = productForm.get('description')!;
+          <input
+            type="text"
+            class="form-control"
+            formControlName="description"
+            [class]="{
+              'is-valid': descModel.touched && descModel.valid,
+              'is-invalid': descModel.touched && !descModel.valid,
+            }"
+          />
+          @if (descModel.errors?.['required']) {
+            <div class="invalid-feedback">Description cannot be empty</div>
+          }
+          @if (descModel.errors?.['minlength']) {
+            <div class="invalid-feedback">
+              You must enter at least
+              {{
+                descModel.errors?.['minlength'].requiredLength -
+                  descModel.errors?.['minlength'].actualLength
+              }}
+              characters more
+            </div>
+          }
+        </div>
+      </label>
+      <label class="mb-3 row">
+        <span class="col-sm-2 col-form-label text-sm-end">Price</span>
+        <div class="col-sm-10">
+          @let priceModel = productForm.get('price')!;
+          <input type="number" class="form-control" formControlName="price" [class]="{
+              'is-valid': priceModel.touched && priceModel.valid,
+              'is-invalid': priceModel.touched && !priceModel.valid,
+            }"/>
+          @if (priceModel.errors?.['required']) {
+            <div class="invalid-feedback">Price cannot be empty</div>
+          }
+          @if (priceModel.errors?.['min']) {
+            <div class="invalid-feedback">
+              Prices has to be unless 1              
+            </div>
+          }
+        </div>
+      </label>
+      <label class="mb-3 row">
+        <span class="col-sm-2 col-form-label text-sm-end">Available</span>
+        <div class="col-sm-10">
+          @let availableModel = productForm.get('available')!;
+          <input type="date" class="form-control" formControlName="available" [class]="{
+              'is-valid': availableModel.touched && availableModel.valid,
+              'is-invalid': availableModel.touched && !availableModel.valid,
+            }"/>
+          @if (availableModel.errors?.['required']) {
+            <div class="invalid-feedback">Available cannot be empty</div>
+          }
+        </div>
+      </label>
+      <label class="mb-3 row">
+        <span class="col-sm-2 col-form-label text-sm-end"> Image</span>
+        <div class="col-sm-10">
+          @let imageUrlModel = productForm.get('imageUrl')!;
+          <input
+            type="file"
+            class="form-control"
+            accept="image/*"
+            encodeBase64
+            formControlName="imageUrl"
+            (encoded)="imageBase64 = $event" [class]="{
+              'is-valid': imageUrlModel.touched && imageUrlModel.valid,
+              'is-invalid': imageUrlModel.touched && !imageUrlModel.valid,
+            }"
+          />
+          @if(imageUrlModel.errors?.['required']) {
+          <div class="invalid-feedback">Image cannot be empty</div>
+          }
+        </div>
+      </label>
+      @if (imageUrlModel) {
+        <div class="row mb-3">
+          <div class="col-sm-10 offset-sm-2">
+            <img class="product-img" [src]="imageBase64" alt="" />
+          </div>
+        </div>
+      }
+
+      <div class="mb-3 row">
+        <div class="offset-sm-2 col-sm-10">
+          <button type="submit" class="btn btn-primary" >
+            Submit
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
