@@ -3,5 +3,22 @@
     <h1 class="display-5 fw-bold">Bienvenido/a</h1>
     <p class="col-md-8 fs-4">En esta aplicación descubriremos los secretos de Angular.</p>
     <a class="btn btn-primary btn-lg" [routerLink]="['/products']">Ver listado de productos</a>
+    <div olMap [coordinates]="coordinates()">
+      <div gaAutocomplete (locationChange)="changePlace($event)"></div>
+      <div olMarker [coordinates]="coordinates()"></div>
+</div>
+    <div class="row col-2 offset-sm-2">
+      <button
+        fbLogin
+        [scopes]="['email', 'public_profile']"
+        class="btn btn-primary"
+        (loginOk)="loggedFacebook($event)"
+        (loginError)="showError($event)"
+      >
+        <fa-icon [icon]="iconFacebook"></fa-icon>
+        Login con Facebook
+      </button>
+      <div googleLogin class="btn" (login)="loggedGoogle($event)"></div>
+    </div>
   </div>
 </div>

@@ -1,10 +1,17 @@
-import { ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
+import { SchemaPath, validate } from "@angular/forms/signals";
 
-export function minDateValidator(minDate: string): ValidatorFn {
-  return (c: AbstractControl): ValidationErrors | null => {
-    if (c.value && minDate && minDate > c.value) {
-      return { minDate: true };
+export function minDate(
+  field: SchemaPath<string>,
+  minDate: string,
+  options?: { message?: string },
+) {
+  validate(field, ({ value }) => {
+    if (value() && value() < minDate) {
+      return {
+        kind: 'minDate',
+        message: options?.message ?? `Date can't be before ${minDate}`,
+      };
     }
     return null;
-  };
+  });
 }

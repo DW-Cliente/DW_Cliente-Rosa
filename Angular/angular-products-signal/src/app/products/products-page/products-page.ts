@@ -1,30 +1,27 @@
-import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal, signal, untracked, WritableSignal } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal, signal, WritableSignal } from '@angular/core';
+import { debounce, form, FormField } from '@angular/forms/signals';
 import { Product } from '../interfaces/product';
 import { ProductItem } from '../product-item/product-item';
 import { ProductsService } from '../services/products-service';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'products-page',
-  imports: [ReactiveFormsModule, ProductItem],
+  imports: [FormField, ProductItem],
   templateUrl: './products-page.html',
   styleUrl: './products-page.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductsPage {
   title = 'Tabla de productos';
-  searchControl = new FormControl('', { nonNullable: true });
-  search = toSignal(this.searchControl.valueChanges.pipe(
-      debounceTime(600), // 600 milisegundos hasta que deja de escribir
-      distinctUntilChanged(), // Solo si el valor cambia
-    ),
-    { initialValue: '' },);
+  search = signal('');
+  searchField = form(this.search, schema => {
+    debounce(schema, 600);
+  });
+
   showImage = signal(true);
   
   #productsService = inject(ProductsService);
-  productsResource = this.#productsService.getProductsResource(this.search);
+  productsResource = this.#productsService.getProductsSearchResource(this.search);
 
   products: WritableSignal<Product[]> = linkedSignal({
     source: () => this.productsResource.value()?.products,

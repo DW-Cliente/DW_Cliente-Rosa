@@ -2,6 +2,11 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
+    path: 'auth',
+    /* canActivate: [logoutActivateGuard], */
+    loadChildren: () => import('./auth/auth.routes').then((m) => m.authRoutes),
+  },
+  {
     path: 'welcome',
     loadComponent: () =>
       import('./welcome/welcome').then((m) => m.Welcome),

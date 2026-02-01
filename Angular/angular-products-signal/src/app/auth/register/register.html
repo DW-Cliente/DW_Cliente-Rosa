@@ -1,0 +1,24 @@
+<form (submit)="registrar($event)">
+  <div class="mb-3">
+    <label for="exampleInputEmail1" class="form-label">Email address</label>
+    <input type="email" class="form-control" [formField]="registerForm.email">
+    @for (error of registerForm.email().errors(); track error.kind) {
+            <div class="invalid-feedback">{{ error.message }}</div>
+          }
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">Password</label>
+    <input type="password" class="form-control" [formField]="registerForm.password">
+    @for (error of registerForm.password().errors(); track error.kind) {
+            <div class="invalid-feedback">{{ error.message }}</div>
+          }
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword2" class="form-label">Repite el password</label>
+    <input type="password" class="form-control" [formField]="registerForm.password2">
+    @for (error of registerForm.password2().errors(); track error.kind) {
+            <div class="invalid-feedback">{{ error.message }}</div>
+          }
+  </div>
+  <button type="submit" class="btn btn-primary" [disabled]="registerForm().invalid()">Regisrarte</button>
+</form>

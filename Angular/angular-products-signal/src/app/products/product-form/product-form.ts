@@ -1,72 +1,64 @@
 import { DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { form, FormField, min, minLength, required } from '@angular/forms/signals';
 import { Router } from '@angular/router';
 import { EncodeBase64Directive } from '../../shared/directives/encode-base64-directive';
-import { minDateValidator } from '../../shared/directives/min-date';
 import { CanComponentDeactivate } from '../../shared/guards/leave-page-guard';
 import { Product } from '../interfaces/product';
 import { ProductsService } from '../services/products-service';
+import { minDate } from '../../shared/directives/min-date';
 
 @Component({
   selector: 'product-form',
-  imports: [ReactiveFormsModule, EncodeBase64Directive, DatePipe],
+  imports: [FormField, EncodeBase64Directive],
   templateUrl: './product-form.html',
   styleUrl: './product-form.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductForm implements CanComponentDeactivate {
   #productsService = inject(ProductsService);
-  #destroyRef = inject(DestroyRef);
   saved = false;
   protected readonly today = new Date().toISOString().split('T')[0];
- /*  productForm = new FormGroup({
-    description: new FormControl('', [Validators.required, Validators.minLength(5)]),
-    price: new FormControl(0, [Validators.required, Validators.min(1)]),
-    available: new FormControl('', [Validators.required, minDateValidator(this.today)]),
-    imageUrl: new FormControl('',[Validators.required])
-  }); */
-  #fb = inject(NonNullableFormBuilder);
-
-  productForm = this.#fb.group({
-    description: ['', [Validators.required, Validators.minLength(5)]],
-    price: [0, [Validators.required, Validators.min(1)]],
-    available: ['', [Validators.required, minDateValidator(this.today)]],
-    imageUrl: ['', [Validators.required]],
-  });
-  imageBase64 = '';
   #route = inject(Router);
 
-  addProduct() {
-    const product: Product = {
-      /* ...(this.productForm.getRawValue() as unknown as Product),  */
-      /* description: this.productForm.get('description')!.value!,
-      price: this.productForm.get('price')!.value!,
-      available: this.productForm.get('available')!.value!, */
-       ...this.productForm.getRawValue(),
-      rating: 1,
-      imageUrl: this.imageBase64,
-    };
-    this.#productsService
-      .insertProduct(product)
-      .pipe(takeUntilDestroyed(this.#destroyRef))
-      .subscribe(() => {
+  productModel = signal<Product>({
+    description: '',
+    available: '',
+    imageUrl: '',
+    rating: 1,
+    price: 0,
+  });
+
+  productForm = form(this.productModel, (schemaPath) => {
+    required(schemaPath.description, { message: 'Description cannot be empty' });
+    required(schemaPath.available, { message: 'Available date cannot be empty' });
+    required(schemaPath.imageUrl);
+    required(schemaPath.price, { message: 'Price cannot be empty' });
+    minLength(schemaPath.description, 5, {
+      message: (context) =>
+        `You must enter at least ${5 - context.value().length} characters more`,
+    });
+    min(schemaPath.price, 0.01, { message: 'Price cannot be 0 or negative' });
+    minDate(schemaPath.available, new Date().toISOString().slice(0, 10));
+  });
+  imageField = form(signal(''), field => {
+    required(field, { message: 'You must choose an image file' });
+  });
+
+  addProduct(event: Event) {
+    event.preventDefault();
+    this.#productsService.insertProduct(this.productModel()).subscribe(() => {
         this.saved = true;
-        this.imageBase64 = ''; // La imagen también (no está vinculada al formulario)
         this.#route.navigate(['/products']);
       });
   }
   canDeactivate() {
     return (
-      this.saved || this.productForm.pristine ||
+      this.saved || !this.productForm().dirty() ||
       confirm('¿Quieres abandonar la página?. Los cambios se perderán...')
     );
   }
   constructor() {
-/*     this.productForm.get('description')?.setValue('Para el editar formulario'); */
-  }
-  resetForm() {
-    this.productForm.reset();
+   /*  this.productForm.description().setControlValue('Valor inicial dado en el constructor'); */
   }
 }

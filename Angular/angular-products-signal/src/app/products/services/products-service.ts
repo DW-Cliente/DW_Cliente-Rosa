@@ -15,8 +15,9 @@ export class ProductsService {
     return httpResource<SingleProductResponse>(() => `${this.#url}/${id()}`);
   }
   
-  getProductsResource(search: Signal<string>) {
+  getProductsSearchResource(search: Signal<string>) {
     const queryParams = computed(() => new URLSearchParams({ search: search() }).toString());
+    console.log(search + " Otra más");
     return httpResource<ProductsResponse>(() => `products?${queryParams()}`);
   }
 
